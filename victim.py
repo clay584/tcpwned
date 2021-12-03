@@ -5,7 +5,7 @@ from time import sleep
 
 
 if __name__ == "__main__":
-    print("Radining in victim private key...")
+    print("Reading in victim private key...")
     with open("victim.key.pem", "r") as f:
         victim_key = f.read()
 
