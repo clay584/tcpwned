@@ -7,6 +7,8 @@ raw sockets on the victim, but if it is sensitive enough, this could be useful.
 Network middleboxes will break this if they are full proxies, meaning there is a
 connection from client to proxy, and a separate connection from proxy to server.
 
+[Example Video](https://www.youtube.com/watch?v=mv23U80lNhc)
+
 ## Method
 
 We are using the two-byte `window` field in the TCP header, and crafting packets
