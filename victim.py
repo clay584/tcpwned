@@ -31,7 +31,8 @@ if __name__ == "__main__":
     # # print(reconstructed_hex_string)
     assert hex_string == reconstructed_hex_string
     reconstructed_victim_key = deser_data(reconstructed_hex_string)
-    print(reconstructed_victim_key)
+    with open("original_hex_string.txt", "w") as f:
+        f.write(hex_string)
 
     # print(reconstructed_victim_key)
     print()
