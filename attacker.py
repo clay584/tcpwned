@@ -23,6 +23,13 @@ def deser_data(data):
 
 
 if __name__ == "__main__":
-    packets = sniff(filter="tcp port 4444", timeout=10, interfaces=["ens33"])
+    packets = sniff(filter="tcp port 4444", timeout=80, iface="eth0")
+
+    reconstructed_hex_string = reconstruct_hex_string(packets)
+
+    reconstructed_victim_key = deser_data(reconstructed_hex_string)
+
+    print(reconstructed_hex_string)
+
     reconstructed_hex_string = reconstruct_hex_string(packets)
     reconstructed_victim_key = deser_data(reconstructed_hex_string)
